@@ -2,7 +2,6 @@
 using System.Linq;
 using System.IO;
 using IronXL;
-using Humanizer;
 using SA.QS.RS_LSD.Lib;
 
 namespace SA.QS.RS_LSD
@@ -14,7 +13,6 @@ namespace SA.QS.RS_LSD
         private static readonly string averageCase = @"C:\CshData\SortingAlgorithms\InputData\avrgCase.txt";
         private static readonly string bestCase = @"C:\CshData\SortingAlgorithms\InputData\bestCase.txt";
         private static readonly string QSoutpCount = @"C:\CshData\SortingAlgorithms\OutputData\QuickSortOutputFile.xlsx";
-        private static readonly string QSoutpFile = @"C:\CshData\SortingAlgorithms\OutputData\QuickSortOutputFile.txt";
         private static int[] worstArray = Array.ConvertAll(File.ReadAllText(worstCase).Split(','), x => int.Parse(x.Trim()));
         private static int[] averageArray = Array.ConvertAll(File.ReadAllText(averageCase).Split(','), x => int.Parse(x.Trim()));
         private static int[] bestArray = Array.ConvertAll(File.ReadAllText(bestCase).Split(','), x => int.Parse(x.Trim()));

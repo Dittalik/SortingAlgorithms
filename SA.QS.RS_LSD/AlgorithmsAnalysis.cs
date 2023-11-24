@@ -17,7 +17,7 @@ namespace SA.QS.RS_LSD
         private static readonly string QSoutpFile = @"C:\CshData\SortingAlgorithms\OutputData\QuickSortOutputFile.txt";
         private static int[] worstArray = Array.ConvertAll(File.ReadAllText(worstCase).Split(','), x => int.Parse(x.Trim()));
         private static int[] averageArray = Array.ConvertAll(File.ReadAllText(averageCase).Split(','), x => int.Parse(x.Trim()));
-        private static readonly int[] bestArray = Array.ConvertAll(File.ReadAllText(bestCase).Split(','), x => int.Parse(x.Trim()));
+        private static int[] bestArray = Array.ConvertAll(File.ReadAllText(bestCase).Split(','), x => int.Parse(x.Trim()));
 
         static void Main(string[] args)
         {
@@ -26,8 +26,6 @@ namespace SA.QS.RS_LSD
             SortingAlgorithms sorting = new SortingAlgorithms();
 
             //int[] avrgArray = Enumerable.Repeat<int>(1, 100000).Select((x, i) => new { i = i, rand = rng.Next() }).OrderBy(x => x.rand).Select(x => x.i).ToArray();
-            averageArray[Array.IndexOf(averageArray, 0)] = 100000;
-            File.WriteAllText(QSoutpFile, String.Join(", ", sorting.QuickSortLRPointers(bestArray, 0, averageArray.Length - 1)));
 
             var watch = new System.Diagnostics.Stopwatch();
             double elapsedMs;
@@ -42,21 +40,19 @@ namespace SA.QS.RS_LSD
 
             for (int i = 9999, j = 2, x = 10000; i < 100000; i += 1000, j++, x += 1000)
             {
+                int compCount = 0, moveCount = 0;
                 watch.Start();
-                sorting.QuickSortLRPointers(worstArray, 0, i);
+                sorting.QuickSortLRPointers(worstArray, 0, i, ref compCount, ref moveCount);
                 watch.Stop();
                 elapsedMs = watch.Elapsed.TotalSeconds;
                 watch.Reset();
 
-                int compCount = 0, moveCount = 0;
-                sorting.СQuickSortLRPointers(worstArray, 0, i, ref compCount, ref moveCount);
                 worstSheet[$"A{j}"].Value = x; //Array Size writting
                 worstSheet[$"B{j}"].Value = elapsedMs;
                 worstSheet[$"C{j}"].Value = compCount;
                 worstSheet[$"D{j}"].Value = moveCount;
                 Console.WriteLine($"Counting Worst Array i = {i}");
                 Console.WriteLine(elapsedMs);
-                //Console.ReadKey();
                 book.Save();
             }
 
@@ -68,18 +64,18 @@ namespace SA.QS.RS_LSD
 
             for (int i = 9999, j = 2, x = 10000; i < 100000; i += 1000, j++, x += 1000)
             {
+                int compCount = 0, moveCount = 0;
                 watch.Start();
-                sorting.QuickSortLRPointers(averageArray, 0, i);
+                sorting.QuickSortLRPointers(averageArray, 0, i, ref compCount, ref moveCount);
                 watch.Stop();
                 elapsedMs = watch.Elapsed.TotalSeconds;
                 watch.Reset();
 
-                int compCount2 = 0, moveCount2 = 0;
-                sorting.СQuickSortLRPointers(averageArray, 0, i, ref compCount2,  ref moveCount2);
+                Console.WriteLine(compCount + moveCount);
                 averageSheet[$"A{j}"].Value = x; //Array Size writting
                 averageSheet[$"B{j}"].Value = elapsedMs;
-                averageSheet[$"C{j}"].Value = compCount2;
-                averageSheet[$"D{j}"].Value = moveCount2;
+                averageSheet[$"C{j}"].Value = compCount;
+                averageSheet[$"D{j}"].Value = moveCount;
                 Console.WriteLine($"Counting Worst Array i = {i}");
                 book.Save();
             }
@@ -91,18 +87,17 @@ namespace SA.QS.RS_LSD
 
             for (int i = 9999, j = 2, x = 10000; i <= 100000; i += 1000, j++, x += 1000)
             {
+                int compCount = 0, moveCount = 0;
                 watch.Start();
-                sorting.QuickSortLRPointers(bestArray, 0, i);
+                sorting.QuickSortLRPointers(bestArray, 0, i, ref compCount, ref moveCount);
                 watch.Stop();
                 elapsedMs = watch.Elapsed.TotalSeconds; ;
                 watch.Reset();
 
-                int compCount3 = 0, moveCount3 = 0;
-                sorting.СQuickSortLRPointers(bestArray, 0, i, ref compCount3, ref moveCount3);
                 bestSheet[$"A{j}"].Value = x; //Array Size writting
                 bestSheet[$"B{j}"].Value = elapsedMs;
-                bestSheet[$"C{j}"].Value = compCount3;
-                bestSheet[$"D{j}"].Value = moveCount3;
+                bestSheet[$"C{j}"].Value = compCount;
+                bestSheet[$"D{j}"].Value = moveCount;
                 Console.WriteLine($"Counting Best Array i = {i}");
                 book.Save();
             }

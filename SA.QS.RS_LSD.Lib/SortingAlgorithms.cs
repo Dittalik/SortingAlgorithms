@@ -9,36 +9,11 @@ namespace SA.QS.RS_LSD.Lib
 {
     public class SortingAlgorithms
     {
-        public int[] QuickSortLRPointers(int[] QuickSort, int firstIndex, int lastIndex)
+        public int[] QuickSortLRPointers(int[] QuickSort, int firstIndex, int lastIndex, ref int compCount, ref int moveCount)
         {
             if (firstIndex < lastIndex)
             {
-                int leftIndex = firstIndex, rightIndex = lastIndex, bearingPoint = QuickSort[(firstIndex + rightIndex) / 2];
-                do
-                {
-                    while (QuickSort[leftIndex] < bearingPoint) leftIndex++;
-                    while (QuickSort[rightIndex] > bearingPoint) rightIndex--;
-                    if (leftIndex <= rightIndex)
-                    {
-                        int buffer = QuickSort[leftIndex];
-                        QuickSort[leftIndex] = QuickSort[rightIndex];
-                        QuickSort[rightIndex] = buffer;;
-                        leftIndex++;
-                        rightIndex--;
-                    }
-                } while (leftIndex <= rightIndex);
-
-                QuickSortLRPointers(QuickSort, firstIndex, rightIndex);
-                QuickSortLRPointers(QuickSort, leftIndex, lastIndex);
-            }
-            return QuickSort; 
-        }
-        public void СQuickSortLRPointers(int[] QuickSort, int firstIndex, int lastIndex, ref int compCount, ref int moveCount)
-        {
-            
-            if (firstIndex < lastIndex)
-            {
-                int leftIndex = firstIndex, rightIndex = lastIndex, bearingPoint = QuickSort[(firstIndex + rightIndex) / 2];
+                int leftIndex = firstIndex, rightIndex = lastIndex, bearingPoint = QuickSort[(leftIndex + rightIndex) / 2];
                 do
                 {
                     while (QuickSort[leftIndex] < bearingPoint) { leftIndex++; compCount++; }
@@ -50,15 +25,17 @@ namespace SA.QS.RS_LSD.Lib
                         int buffer = QuickSort[leftIndex];
                         QuickSort[leftIndex] = QuickSort[rightIndex];
                         QuickSort[rightIndex] = buffer;
-                        moveCount++;
                         leftIndex++;
                         rightIndex--;
                     }
+                    if (leftIndex < rightIndex) { moveCount++; }
                 } while (leftIndex <= rightIndex);
-                СQuickSortLRPointers(QuickSort, firstIndex, rightIndex, ref compCount,  ref moveCount);
-                СQuickSortLRPointers(QuickSort, leftIndex, lastIndex, ref compCount, ref moveCount);
+                QuickSortLRPointers(QuickSort, firstIndex, rightIndex, ref compCount, ref moveCount);
+                QuickSortLRPointers(QuickSort, leftIndex, lastIndex, ref compCount, ref moveCount);
             }
+            return QuickSort; 
         }
+
 
         struct KVEntry
         {
